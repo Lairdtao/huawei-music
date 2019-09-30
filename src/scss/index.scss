@@ -1,0 +1,205 @@
+//scss/sass最常见用法,可以定义一些变量便于后面直接使用这些颜色,修改也只需要修改变量,由于是嵌套,后代选择器不用写特别长看起来更清晰
+$backgroundColor: #060a3d;
+$color: #fff;
+$color1: #868aaf;
+$color2: #db3baa;
+$color2-dark: darken($color2, 10%); //在该颜色上深10%
+$color2-darker: darken($color2, 30%);
+$color3: #0025f1;
+* {
+    padding: 0;
+    margin: 0;
+}
+
+#player {
+    height: 100vh;
+    background: $backgroundColor;
+    overflow: hidden;
+    .header {
+        text-align: center;
+        height: 110px;
+        h1 {
+            color: $color;
+            font-size: 20px;
+            padding-top: 20px;
+        }
+        p {
+            color: $color1;
+            font-size: 12px;
+        }
+        .balls {
+            display: flex;
+            justify-content: center; //flex布局中水平居中
+            align-items: center; //垂直居中
+            margin-top: 20px;
+            span {
+                display: block;
+                width: 5px;
+                height: 5px;
+                background: $color2-darker;
+                border-radius: 50%;
+                margin: 0 4px;
+                &.current {
+                    //&表示既有span又有current标签,不加则表示span下有current标签的孩子
+                    width: 8px;
+                    height: 8px;
+                    background: $color2;
+                }
+            }
+        }
+    }
+    .panels {
+        width: 200vw;
+        display: flex;
+        transition: transform 0.5s;
+        height: calc(100vh - 250px);
+        align-items: center;
+        &.panel1 {
+            transform: translateX(-0vw);
+        }
+        &.panel2 {
+            transform: translateX(-100vw);
+        }
+        .panel-effect {
+            width: 100vw;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            .effect {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 40vh;
+                >div {
+                    background-size: contain; //即为“包含”，我图片虽然缩放了，但是整个图是被“包含”在里面了，完整显示，不能裁剪
+                    position: absolute;
+                }
+                .effect-1 {
+                    background: url(../svg/effect-no-move.svg) 0 0 no-repeat;
+                    width: 70vw;
+                    height: 70vw;
+                    animation: rotate 10s linear infinite;
+                }
+                .effect-2 {
+                    background: url(../svg/effect-move1.svg) 0 0 no-repeat;
+                    width: 60vw;
+                    height: 60vw;
+                    animation: rotate 10s linear infinite reverse; //反转
+                }
+                .effect-3 {
+                    background: url(../svg/effect-move2.svg) 0 0 no-repeat;
+                    width: 25vw;
+                    height: 25vw;
+                    animation: rotate 10s linear infinite; //正转
+                }
+            }
+            .lyric {
+                text-align: center;
+                p {
+                    font-size: 13px;
+                    color: $color1;
+                    margin-top: 8px;
+                    &.current {
+                        color: $color;
+                    }
+                }
+            }
+        }
+        .panel-lyrics {
+            width: 100vw;
+            height: 100%;
+            text-align: center;
+            line-height: 2;
+            overflow: hidden;
+            .container {
+                transition: all .3s;
+                transform: translateY(-50px);
+                p {
+                    font-size: 14px;
+                    color: $color1;
+                    &.current {
+                        color: $color;
+                    }
+                }
+            }
+        }
+    }
+    .footer {
+        height: 140px;
+        .buttons {
+            display: flex;
+            justify-content: center;
+            svg {
+                width: 24px;
+                height: 24px;
+                margin: 0 20px;
+            }
+        }
+        .bar-area {
+            color: $color1;
+            font-size: 12px;
+            display: flex;
+            padding: 0 20px;
+            margin-top: 20px;
+            align-items: center;
+            .time-start {
+                order: 1;
+            }
+            .time-end {
+                order: 3;
+            }
+            .bar {
+                order: 2;
+                flex: 1;
+                height: 4px;
+                background: $color3;
+                border-radius: 2px;
+                margin: 0 10px;
+                .progress {
+                    width: 30%;
+                    height: 100%;
+                    border-radius: 2px;
+                    background: $color2;
+                    position: relative;
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        right: 0;
+                        top: -7px;
+                        display: block;
+                        width: 16px;
+                        height: 16px;
+                        background: url(../svg/progress.svg) 0 0 no-repeat;
+                        background-size: contain;
+                    }
+                }
+            }
+        }
+        .actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 0 20px;
+            svg {
+                width: 28px;
+                height: 28px;
+                &.btn-play-pause {
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+        }
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg)
+    }
+}

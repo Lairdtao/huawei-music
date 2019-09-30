@@ -1,0 +1,1 @@
+{"version":3,"sources":["src\\scss\\index.scss"],"names":[],"mappings":"AAEA,KACI,WAGJ,EACI","file":"scss.d7dd3e3c.css","sourceRoot":"..","sourcesContent":["$color: #ff00ff;\r\n$color2: #ffaa33;\r\nbody {\r\n    color: $color;\r\n}\r\n\r\np {\r\n    color: $color2;\r\n}\r\n\r\n//scss/sass最常见用法,可以定义一些变量便于后面直接使用这些颜色,修改也只需要修改变量,由于是嵌套,后代选择器不用写特别长看起来更清晰"]}

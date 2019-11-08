@@ -202,8 +202,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-console.log('hello  饥人谷sss');
-
 var Player =
 /*#__PURE__*/
 function () {
@@ -269,15 +267,15 @@ function () {
       };
 
       this.$('.btn-pre').onclick = function () {
+        self.currentIndex = (self.songList.length + self.currentIndex - 1) % self.songList.length;
         self.loadSong();
-        console.log('left');
-        self.playPreSong();
+        self.playSong();
       };
 
       this.$('.btn-next').onclick = function () {
+        self.currentIndex = (self.currentIndex + 1) % self.songList.length;
         self.loadSong();
-        self.playNextSong();
-        console.log('right');
+        self.playSong();
       };
 
       this.audio.ontimeupdate = function () {
@@ -291,41 +289,39 @@ function () {
       swiper.on('swipLeft', function () {
         this.classList.remove('panel1');
         this.classList.add('panel2');
+        document.querySelectorAll('.header span')[0].classList.remove('current');
+        document.querySelectorAll('.header span')[1].classList.add('current');
       });
       swiper.on('swipRight', function () {
         this.classList.remove('panel2');
         this.classList.add('panel1');
+        document.querySelectorAll('.header span')[1].classList.remove('current');
+        document.querySelectorAll('.header span')[0].classList.add('current');
       });
-    }
-  }, {
-    key: "playPreSong",
-    value: function playPreSong() {
-      var _this3 = this;
+    } // playPreSong() {
+    //     this.currentIndex = (this.songList.length + this.currentIndex - 1) % this.songList.length
+    //     this.audio.src = this.songList[this.currentIndex].url
+    //     this.audio.oncanplaythrough = () => this.audio.play() //当音乐就绪后再调用播放
+    // }
+    // playNextSong() {
+    //     this.currentIndex = (this.currentIndex + 1) % this.songList.length
+    //     this.audio.src = this.songList[this.currentIndex].url
+    //     this.audio.oncanplaythrough = () => this.audio.play()
+    // }
 
-      this.currentIndex = (this.songList.length + this.currentIndex - 1) % this.songList.length;
-      this.audio.src = this.songList[this.currentIndex].url;
+  }, {
+    key: "playSong",
+    value: function playSong() {
+      var _this3 = this;
 
       this.audio.oncanplaythrough = function () {
         return _this3.audio.play();
-      }; //当音乐就绪后再调用播放
-
-    }
-  }, {
-    key: "playNextSong",
-    value: function playNextSong() {
-      var _this4 = this;
-
-      this.currentIndex = (this.currentIndex + 1) % this.songList.length;
-      this.audio.src = this.songList[this.currentIndex].url;
-
-      this.audio.oncanplaythrough = function () {
-        return _this4.audio.play();
       };
     }
   }, {
     key: "loadSong",
     value: function loadSong() {
-      var _this5 = this;
+      var _this4 = this;
 
       var songObj = this.songList[this.currentIndex];
       this.$('.header h1').innerText = songObj.title;
@@ -333,7 +329,7 @@ function () {
       this.audio.src = songObj.url;
 
       this.audio.onloadedmetadata = function () {
-        return _this5.$('.time-end').innerText = _this5.formateTime(_this5.audio.duration);
+        return _this4.$('.time-end').innerText = _this4.formateTime(_this4.audio.duration);
       }; //获取歌曲总时长
 
 
@@ -342,14 +338,14 @@ function () {
   }, {
     key: "loadLyric",
     value: function loadLyric() {
-      var _this6 = this;
+      var _this5 = this;
 
       fetch(this.songList[this.currentIndex].lyric).then(function (res) {
         return res.json();
       }).then(function (data) {
         console.log(data.lrc.lyric);
 
-        _this6.setLyrics(data.lrc.lyric);
+        _this5.setLyrics(data.lrc.lyric);
 
         window.lyrics = data.lrc.lyric;
       });
@@ -472,7 +468,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "3199" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "4746" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

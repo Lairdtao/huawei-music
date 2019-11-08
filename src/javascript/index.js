@@ -1,4 +1,3 @@
-console.log('hello  饥人谷sss')
 import './icons.js'
 import Swiper from './swiper.js'
 
@@ -32,58 +31,66 @@ class Player {
     }
 
     bind() {
-        let self = this
-        this.$('.btn-play-pause').onclick = function() {
-            if (this.classList.contains('playing')) { //判断是否有某一个class
-                self.audio.pause()
-                this.classList.remove('playing')
-                this.classList.add('pause')
-                this.querySelector('use').setAttribute('xlink:href', '#icon-play') //修改属性
-            } else if (this.classList.contains('pause')) {
-                self.audio.play()
-                this.classList.remove('pause')
-                this.classList.add('playing')
-                this.querySelector('use').setAttribute('xlink:href', '#icon-pause')
+            let self = this
+            this.$('.btn-play-pause').onclick = function() {
+                if (this.classList.contains('playing')) { //判断是否有某一个class
+                    self.audio.pause()
+                    this.classList.remove('playing')
+                    this.classList.add('pause')
+                    this.querySelector('use').setAttribute('xlink:href', '#icon-play') //修改属性
+                } else if (this.classList.contains('pause')) {
+                    self.audio.play()
+                    this.classList.remove('pause')
+                    this.classList.add('playing')
+                    this.querySelector('use').setAttribute('xlink:href', '#icon-pause')
+                }
             }
+
+            this.$('.btn-pre').onclick = function() {
+                self.currentIndex = (self.songList.length + self.currentIndex - 1) % self.songList.length
+                self.loadSong()
+                self.playSong()
+            }
+
+            this.$('.btn-next').onclick = function() {
+                self.currentIndex = (self.currentIndex + 1) % self.songList.length
+                self.loadSong()
+                self.playSong()
+            }
+
+            this.audio.ontimeupdate = function() {
+                console.log(parseInt(self.audio.currentTime * 1000)) //定位时间
+                self.locateLyric()
+                self.setProgerssBar()
+            }
+
+            let swiper = new Swiper(this.$('.panels'))
+            swiper.on('swipLeft', function() {
+                this.classList.remove('panel1')
+                this.classList.add('panel2')
+                document.querySelectorAll('.header span')[0].classList.remove('current')
+                document.querySelectorAll('.header span')[1].classList.add('current')
+            })
+
+            swiper.on('swipRight', function() {
+                this.classList.remove('panel2')
+                this.classList.add('panel1')
+                document.querySelectorAll('.header span')[1].classList.remove('current')
+                document.querySelectorAll('.header span')[0].classList.add('current')
+
+            })
         }
-
-        this.$('.btn-pre').onclick = function() {
-            self.loadSong()
-            console.log('left');
-            self.playPreSong()
-        }
-
-        this.$('.btn-next').onclick = function() {
-            self.loadSong()
-            self.playNextSong()
-            console.log('right');
-        }
-
-        this.audio.ontimeupdate = function() {
-            console.log(parseInt(self.audio.currentTime * 1000)) //定位时间
-            self.locateLyric()
-            self.setProgerssBar()
-        }
-
-        let swiper = new Swiper(this.$('.panels'))
-        swiper.on('swipLeft', function() {
-            this.classList.remove('panel1')
-            this.classList.add('panel2')
-        })
-
-        swiper.on('swipRight', function() {
-            this.classList.remove('panel2')
-            this.classList.add('panel1')
-        })
-    }
-    playPreSong() {
-        this.currentIndex = (this.songList.length + this.currentIndex - 1) % this.songList.length
-        this.audio.src = this.songList[this.currentIndex].url
-        this.audio.oncanplaythrough = () => this.audio.play() //当音乐就绪后再调用播放
-    }
-    playNextSong() {
-        this.currentIndex = (this.currentIndex + 1) % this.songList.length
-        this.audio.src = this.songList[this.currentIndex].url
+        // playPreSong() {
+        //     this.currentIndex = (this.songList.length + this.currentIndex - 1) % this.songList.length
+        //     this.audio.src = this.songList[this.currentIndex].url
+        //     this.audio.oncanplaythrough = () => this.audio.play() //当音乐就绪后再调用播放
+        // }
+        // playNextSong() {
+        //     this.currentIndex = (this.currentIndex + 1) % this.songList.length
+        //     this.audio.src = this.songList[this.currentIndex].url
+        //     this.audio.oncanplaythrough = () => this.audio.play()
+        // }
+    playSong() {
         this.audio.oncanplaythrough = () => this.audio.play()
     }
 
